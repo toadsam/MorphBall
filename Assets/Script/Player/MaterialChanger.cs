@@ -50,13 +50,13 @@ public class MaterialChanger : MonoBehaviour
             case "불": // 빨강 머티리얼
                 player.moveSpeed = 0.2f;
                 player.jumpForce = 5f;
-                col.material = slippery;
+                col.material = sticky;
                 break;
 
             case "얼음": // 파랑 머티리얼
                 player.moveSpeed = 0.4f;
                 player.jumpForce = 10f;
-                col.material = normal;
+                col.material = sticky;
                 break;
 
             case "풀": // 초록 머티리얼
@@ -68,7 +68,7 @@ public class MaterialChanger : MonoBehaviour
             default: // 기본값
                 player.moveSpeed = 1f;
                 player.jumpForce = 5f;
-                col.material = normal;
+                col.material = sticky;
                 break;
         }
 
