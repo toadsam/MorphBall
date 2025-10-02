@@ -3,20 +3,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 3f;
     public float jumpForce = 5f;
     private Rigidbody rb;
 
     private Vector2 moveInput;
     private bool jumpPressed;
-    //private bool attackPressed;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
-    // Input System 자동으로 호출되는 메서드
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -27,32 +26,19 @@ public class PlayerController : MonoBehaviour
         if (context.performed) jumpPressed = true;
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-     //   if (context.performed) attackPressed = true;
-    }
-
     private void FixedUpdate()
     {
-        // 이동
+        // 입력 방향 → 월드 좌표 변환
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
-        rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
-    }
 
-    private void Update()
-    {
+        // 위치를 직접 이동시키는 대신 힘을 가해 굴러가도록
+        rb.AddForce(move * moveSpeed, ForceMode.Impulse);
+
         // 점프 처리
         if (jumpPressed)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumpPressed = false;
         }
-
-        // 공격 처리
-      //  if (attackPressed)
-       // {
-           // Debug.Log("공격 실행!");
-         //   attackPressed = false;
-        //}
     }
 }
